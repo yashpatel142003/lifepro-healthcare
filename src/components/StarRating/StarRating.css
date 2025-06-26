@@ -1,0 +1,48 @@
+.star-rating-container {
+  margin-bottom: 18px;
+}
+
+.star-rating-label {
+  display: block;
+  font-weight: 500;
+  color: #333;
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+.stars {
+  display: flex;
+  gap: 2px;
+}
+
+.star {
+  font-size: 28px; /* Adjust size as needed */
+  color: #ccc; /* Default star color */
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+.star.selected {
+  color: #facc15; /* Selected star color */
+}
+
+/* Hover effect */
+.star:hover,
+.star:hover ~ .star {
+  color: #eab308;
+}
+
+/* This makes sure that if you hover on a star, all stars up to it turn selected hover color */
+.stars:hover .star {
+    color: #ccc; /* Reset all on container hover */
+}
+
+.stars:hover .star:hover,
+.stars:hover .star:hover ~ .star {
+    color: #eab308; /* Color on hover */
+}
+
+/* If a selection is made, hover should only affect stars beyond the selection */
+.stars .star.selected ~ .star:hover {
+    color: #eab308;
+}

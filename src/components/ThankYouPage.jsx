@@ -1,14 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; 
-import '../css/ThankYouPage.css'; 
+import { Link } from 'react-router-dom';
+import '../css/ThankYouPage.css'; // Create a simple CSS for this if needed
+import logo from '../image/logo.png';
 
 const ThankYouPage = () => {
   return (
     <div className="thank-you-container">
-      <h1>Thank You for Your Feedback!</h1>
-      <p>We appreciate you taking the time to share your thoughts with us.</p>
-      <p>Your input is invaluable as we strive to improve our services.</p>
-      <Link to="/" className="back-home-button">Go back to the feedback form</Link>
+      <img src={logo} alt="Life Pro Healthcare" className="logo" />
+      <h1>Thank You!</h1>
+      <p>Your feedback has been successfully submitted. We appreciate your valuable insights and look forward to improving our services based on your suggestions.</p>
+      <p>If you have any further questions or require assistance, please don't hesitate to contact us.</p>
+      <Link to="/" className="back-home-button">Go back to Home</Link>
     </div>
   );
 };

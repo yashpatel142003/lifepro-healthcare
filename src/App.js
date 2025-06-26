@@ -1,14 +1,13 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import FeedbackForm from '../src/components/ProductFeedbackForm';
-import ThankYouPage from '../src/components/ThankYouPage'; 
-import './App.css'; 
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ProductFeedbackForm from '../src/components/ProductFeedbackForm';
+import ThankYouPage from '../src/components/ThankYouPage'; // Your simple thank you page
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<FeedbackForm />} />
+        <Route path="/" element={<ProductFeedbackForm />} />
         <Route path="/thank-you" element={<ThankYouPage />} />
       </Routes>
     </Router>
