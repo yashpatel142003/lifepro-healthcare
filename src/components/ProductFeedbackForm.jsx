@@ -108,7 +108,7 @@ const ProductFeedbackForm = () => {
 
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, checked } = e.target;
 
     if (name.startsWith('brandStatements.')) {
       const statementKey = name.split('.')[1];
