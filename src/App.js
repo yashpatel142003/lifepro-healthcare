@@ -1,10 +1,17 @@
-import FeedbackPage from './pages/FeedbackPage';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import FeedbackForm from '../src/components/ProductFeedbackForm';
+import ThankYouPage from '../src/components/ThankYouPage'; 
+import './App.css'; 
 
 function App() {
   return (
-    <div className="App">
-      <FeedbackPage />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<FeedbackForm />} />
+        <Route path="/thank-you" element={<ThankYouPage />} />
+      </Routes>
+    </Router>
   );
 }
 

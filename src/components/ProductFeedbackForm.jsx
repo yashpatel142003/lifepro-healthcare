@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import '../css/ProductFeedbackForm.css';
 import logo from '../image/logo.png';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const FeedbackForm = () => {
+  const navigate = useNavigate(); // Initialize useNavigate hook
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -38,9 +41,6 @@ const FeedbackForm = () => {
       case 'phone':
         if (value && !/^\d{10}$/.test(value)) error = 'Phone number should be 10 digits.';
         break;
-      case 'feedback':
-        if (!value.trim()) error = 'Feedback is required.';
-        break;
       default:
         break;
     }
@@ -49,7 +49,7 @@ const FeedbackForm = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    ['name', 'email', 'phone', 'feedback'].forEach((field) => {
+    ['name', 'email', 'phone'].forEach((field) => {
       const error = validateField(field, formData[field]);
       if (error) newErrors[field] = error;
     });
@@ -61,8 +61,6 @@ const FeedbackForm = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-
-    // Validate field on change
     setErrors(prev => ({ ...prev, [name]: validateField(name, value) }));
   };
 
@@ -77,22 +75,8 @@ const FeedbackForm = () => {
     feedbackList.push(formData);
     localStorage.setItem('lifepro-feedbacks', JSON.stringify(feedbackList));
 
-    toast.success('Thank you for your feedback!');
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      companyName: '',
-      position: '',
-      department: '',
-      feedbackPurpose: '',
-      howHeard: '',
-      feedbackType: '',
-      feedback: '',
-      rating: '',
-      recommend: ''
-    });
-    setErrors({});
+    // Redirect to the ThankYouPage after successful submission
+    navigate('/thank-you');
   };
 
   return (
@@ -212,7 +196,7 @@ const FeedbackForm = () => {
             </select>
           </label>
 
-          <label htmlFor="feedback" className="required">Your Feedback:
+          <label htmlFor="feedback">Your Feedback:
             <textarea
               id="feedback"
               name="feedback"
@@ -224,7 +208,6 @@ const FeedbackForm = () => {
               minLength={10}
             />
           </label>
-          {errors.feedback && <span id="feedback-error" className="error">{errors.feedback}</span>}
         </fieldset>
 
         <fieldset>
@@ -273,7 +256,7 @@ const FeedbackForm = () => {
         <button type="submit" aria-label="Submit feedback form">Submit Feedback</button>
       </form>
 
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position="top-center" autoClose={3000} />
     </div>
   );
 };
