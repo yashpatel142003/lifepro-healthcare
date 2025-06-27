@@ -24,19 +24,19 @@ const ProductFeedbackForm = () => {
     email: '',
     phone: '',
     companyName: '',
-    customerStatus: '', 
-    customerDuration: '', 
+    customerStatus: '',
+    customerDuration: '',
 
     // Step 2: Product Feedback
     howHeard: '',
     productInterest: '',
     productSatisfaction: 0,
     favoriteFeatures: '',
-    productRecommendation: '', 
+    productRecommendation: '',
 
-    npsScore: 0, 
-    companyOverallSatisfaction: '', 
-    brandStatements: { 
+    npsScore: 0,
+    companyOverallSatisfaction: '',
+    brandStatements: {
       innovative: false,
       reliable: false,
       customerCentric: false,
@@ -44,20 +44,23 @@ const ProductFeedbackForm = () => {
     },
 
     // Step 4: Client Service & Website Experience
-    customerServiceUsed: '', 
-    customerServiceRating: 0, 
-    websiteEaseOfUse: 0, 
+    customerServiceUsed: '',
+    customerServiceRating: 0,
+    websiteEaseOfUse: 0,
     websiteImprovements: '',
 
     // Step 5: Additional Feedback & Optional Contact
     generalComments: '',
-    contactForFollowUp: '', 
+    contactForFollowUp: '',
     followUpEmail: '',
   });
 
   const [errors, setErrors] = useState({});
   const [showConfetti, setShowConfetti] = useState(false);
   const [showModal, setShowModal] = useState(false);
+
+  // Define your backend API base URL
+  const API_BASE_URL = 'http://localhost:8080/api/feedback'; // Adjust if your backend runs on a different port or path
 
   // Validation logic specific to each step
   const validateStep = (step) => {
@@ -141,17 +144,41 @@ const ProductFeedbackForm = () => {
     setCurrentStep((prev) => prev - 1);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => { // Made handleSubmit async
     e.preventDefault(); // Prevent default form submission
     if (validateStep(currentStep)) {
-      const feedbackList = JSON.parse(localStorage.getItem('lifepro-feedbacks')) || [];
-      feedbackList.push(formData);
-      localStorage.setItem('lifepro-feedbacks', JSON.stringify(feedbackList));
+      try {
+        const response = await fetch(`${API_BASE_URL}/submit`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
 
-      setShowConfetti(true);
-      setTimeout(() => {
-        setShowModal(true);
-      }, 500); // Show modal after confetti starts
+        if (response.ok) {
+          const result = await response.json();
+          console.log('Feedback submitted successfully:', result);
+          toast.success('Feedback submitted successfully!');
+
+          // Optional: Store feedback locally as well, or remove if not needed
+          const feedbackList = JSON.parse(localStorage.getItem('lifepro-feedbacks')) || [];
+          feedbackList.push(result); // Push the saved feedback from the backend response
+          localStorage.setItem('lifepro-feedbacks', JSON.stringify(feedbackList));
+
+          setShowConfetti(true);
+          setTimeout(() => {
+            setShowModal(true);
+          }, 500); // Show modal after confetti starts
+        } else {
+          const errorData = await response.json();
+          console.error('Error submitting feedback:', errorData);
+          toast.error(`Error submitting feedback: ${errorData.message || response.statusText}`);
+        }
+      } catch (error) {
+        console.error('Network error or unexpected issue:', error);
+        toast.error('An unexpected error occurred. Please try again.');
+      }
     }
   };
 

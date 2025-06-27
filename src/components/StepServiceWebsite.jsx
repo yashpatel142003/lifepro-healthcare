@@ -1,4 +1,3 @@
-import React from 'react';
 import StarRating from './StarRating/StarRating';
 
 const StepServiceWebsite = ({ formData, handleChange, handleRatingChange, errors, onNext, onBack }) => {
