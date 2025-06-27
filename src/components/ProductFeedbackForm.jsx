@@ -12,7 +12,7 @@ import StepProductFeedback from './StepProductFeedback';
 import StepCompanyFeedback from './StepCompanyFeedback';
 import StepServiceWebsite from './StepServiceWebsite';
 import StepAdditionalFeedback from './StepAdditionalFeedback';
-import ThankYouModal from './ThankYouModal/ThankYouModal';
+// import ThankYouModal from './ThankYouModal/ThankYouModal'; // Removed ThankYouModal import
 
 const ProductFeedbackForm = () => {
   const navigate = useNavigate();
@@ -52,7 +52,7 @@ const ProductFeedbackForm = () => {
 
   const [errors, setErrors] = useState({});
   const [showConfetti, setShowConfetti] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false); // Removed showModal state
 
   // const API_BASE_URL = 'http://localhost:8080/api/feedback'; // Commented for localStorage mode
 
@@ -137,7 +137,10 @@ const ProductFeedbackForm = () => {
 
         toast.success('Feedback saved locally!');
         setShowConfetti(true);
-        setTimeout(() => setShowModal(true), 500);
+        setTimeout(() => {
+          setShowConfetti(false);
+          navigate('/thank-you'); // Direct navigation to thank-you page
+        }, 500);
       } catch (err) {
         console.error('Error storing feedback locally:', err);
         toast.error('Failed to save feedback. Try again.');
@@ -145,11 +148,11 @@ const ProductFeedbackForm = () => {
     }
   };
 
-  const closeModalAndNavigate = () => {
-    setShowModal(false);
-    setShowConfetti(false);
-    navigate('/thank-you');
-  };
+  // const closeModalAndNavigate = () => { // Removed this function as modal is no longer used
+  //   setShowModal(false);
+  //   setShowConfetti(false);
+  //   navigate('/thank-you');
+  // };
 
   const renderStep = () => {
     switch (currentStep) {
@@ -192,7 +195,7 @@ const ProductFeedbackForm = () => {
         {renderStep()}
       </form>
 
-      {showModal && <ThankYouModal onClose={closeModalAndNavigate} />}
+      {/* {showModal && <ThankYouModal onClose={closeModalAndNavigate} />} */} {/* Removed ThankYouModal usage */}
       <ToastContainer position="top-center" autoClose={3000} />
     </div>
   );
